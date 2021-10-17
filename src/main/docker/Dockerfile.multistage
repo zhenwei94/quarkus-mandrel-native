@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ## Stage 1 : build with maven builder image with native capabilities
 FROM quay.io/quarkus/ubi-quarkus-native-image:21.2.0-java11 AS build
 COPY --chown=quarkus:quarkus mvnw /code/mvnw
@@ -5,6 +7,9 @@ COPY --chown=quarkus:quarkus .mvn /code/.mvn
 COPY --chown=quarkus:quarkus pom.xml /code/
 USER quarkus
 WORKDIR /code
+
+RUN chmod 755 /code/mvnw
+
 RUN ./mvnw -B org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline
 COPY src /code/src
 RUN ./mvnw package -Pnative
