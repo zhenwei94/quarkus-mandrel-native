@@ -6,80 +6,83 @@ objects:
   - kind: BuildConfig
     apiVersion: build.openshift.io/v1
     metadata:
-    name: quarkus-mandrel-native
+      name: quarkus-mandrel-native
     spec:
-    output:
-      to:
-      kind: ImageStreamTag
-      name: 'quarkus-mandrel-native:latest'
-    successfulBuildsHistoryLimit: 5
-    failedBuildsHistoryLimit: 5
-    strategy:
-      type: Docker
-    dockerStrategy:
-    dockerfilePath: src/main/docker/Dockerfile.multistage-mandrel
-    source:
-    type: Git
-    git:
-      uri: 'https://github.com/zhenwei94/quarkus-mandrel-native.git'
-    contextDir: /
-    runPolicy: Serial
+      output:
+        to:
+          kind: ImageStreamTag
+          name: 'quarkus-mandrel-native:latest'
+      successfulBuildsHistoryLimit: 5
+      failedBuildsHistoryLimit: 5
+      strategy:
+        type: Docker
+      dockerStrategy:
+        dockerfilePath: src/main/docker/Dockerfile.multistage-mandrel
+      source:
+        type: Git
+        git:
+          uri: 'https://github.com/zhenwei94/quarkus-mandrel-native.git'
+        contextDir: /
+      runPolicy: Serial
+
   - kind: Deployment
     apiVersion: apps/v1
     metadata:
       name: quarkus-mandrel-native
-      spec:
-    replicas: 1
-    selector:
-    matchLabels:
-      app: "quarkus-mandrel-native"
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: "quarkus-mandrel-native"
       template:
         metadata:
-      labels:
-        app: "quarkus-mandrel-native"
-    spec:
-      containers:
-        - name: quarkus-mandrel-native
-          image: quarkus-mandrel-native:latest
-          ports:
-            - containerPort: 8080
-          port: "TCP"
+          labels:
+            app: "quarkus-mandrel-native"
+        spec:
+          containers:
+            - name: quarkus-mandrel-native
+              image: quarkus-mandrel-native:latest
+              ports:
+                - containerPort: 8080
+                  port: "TCP"
       triggers:
         - type: ConfigChange
         - type: ImageChange
         - imageChangeParams:
-      automatic: true
-      containerNames:
-        - "quarkus-mandrel-native"
-      from:
-        kind: ImageStreamTag
-        name: quarkus-mandrel-native:latest
+          automatic: true
+          containerNames:
+            - "quarkus-mandrel-native"
+          from:
+            kind: ImageStreamTag
+            name: quarkus-mandrel-native:latest
       strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 25%
-      maxSurge: 25%
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 25%
+          maxSurge: 25%
+
   - kind: Service
     apiVersion: v1
     metadata:
       name: quarkus-mandrel-native
     spec:
       ports:
-        - name: 8080-tcp
-          protocol: TCP
-          port: 8080
-          targetPort: 8080
-    selector:
-    app: quarkus-mandrel-native
+      - name: 8080-tcp
+        protocol: TCP
+        port: 8080
+        targetPort: 8080
+      selector:
+        app: quarkus-mandrel-native
+
   - kind: Route
     apiVersion: route.openshift.io/v1
     metadata:
       name: quarkus-mandrel-native
     spec:
-    to:
-      kind: Service
-      name: quarkus-mandrel-native
-      weight: 100
-    port:
-      targetPort: 8080-tcp
-      wildcardPolicy: None
+      to:
+        kind: Service
+        name: quarkus-mandrel-native
+        weight: 100
+      port:
+        targetPort: 8080-tcp
+        wildcardPolicy: None
