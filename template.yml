@@ -54,7 +54,7 @@ objects:
             - "quarkus-mandrel-native"
           from:
             kind: ImageStreamTag
-            name: quarkus-mandrel-native:latest
+            name: image-registry.openshift-image-registry.svc:5000/test/quarkus-mandrel-native
       strategy:
         type: RollingUpdate
         rollingUpdate:
