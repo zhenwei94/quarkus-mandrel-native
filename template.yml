@@ -45,7 +45,7 @@ objects:
         spec:
           containers:
             - name: quarkus-mandrel-native
-              image: quarkus-mandrel-native:latest
+              image: image-registry.openshift-image-registry.svc:5000/test/quarkus-mandrel-native
               ports:
                 - containerPort: 8080
                   port: "TCP"
