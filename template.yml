@@ -3,6 +3,10 @@ apiVersion: template.openshift.io/v1
 metadata:
   name: quarkus-mandrel-native-template
 objects:
+  - kind: ImageStream
+    apiVersion: image.openshift.io/v1
+    metadata:
+      name: quarkus-mandrel-native
   - kind: BuildConfig
     apiVersion: build.openshift.io/v1
     metadata:
