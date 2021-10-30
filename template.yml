@@ -20,8 +20,8 @@ objects:
       failedBuildsHistoryLimit: 5
       strategy:
         type: Docker
-      dockerStrategy:
-        dockerfilePath: src/main/docker/Dockerfile.multistage-mandrel
+        dockerStrategy:
+          dockerfilePath: src/main/docker/Dockerfile.multistage-mandrel
       source:
         type: Git
         git:
