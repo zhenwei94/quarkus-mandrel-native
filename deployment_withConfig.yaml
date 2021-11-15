@@ -25,17 +25,17 @@ objects:
               ports:
                 - containerPort: 8080
                   port: "TCP"
-            volumeMounts:
-              - name: application-config
-                mountPath: "/deployments/config"
-                readOnly: true
-              volumes:
+              volumeMounts:
                 - name: application-config
-                  configMap:
-                    name: quarkus-app-config
-                    items:
-                      - key: application.properties
-                        path: application.properties
+                  mountPath: "/deployments/config"
+                  readOnly: true
+        volumes:
+          - name: application-config
+            configMap:
+              name: quarkus-app-config
+              items:
+                - key: application.properties
+                  path: application.properties
       triggers:
         - type: ConfigChange
         - type: ImageChange
