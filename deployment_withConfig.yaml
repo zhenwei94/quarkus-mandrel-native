@@ -25,6 +25,17 @@ objects:
               ports:
                 - containerPort: 8080
                   port: "TCP"
+            volumeMounts:
+              - name: application-config
+                mountPath: "/deployments/config"
+                readOnly: true
+              volumes:
+                - name: application-config
+                  configMap:
+                    name: quarkus-app-config
+                    items:
+                      - key: application.properties
+                        path: application.properties
       triggers:
         - type: ConfigChange
         - type: ImageChange
@@ -47,10 +58,10 @@ objects:
       name: quarkus-mandrel-native
     spec:
       ports:
-      - name: 8080-tcp
-        protocol: TCP
-        port: 8080
-        targetPort: 8080
+        - name: 8080-tcp
+          protocol: TCP
+          port: 8080
+          targetPort: 8080
       selector:
         app: quarkus-mandrel-native
 

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: quarkus-app-config
+data:
+  application.properties:
+    greeter.message=Hello From app properties
